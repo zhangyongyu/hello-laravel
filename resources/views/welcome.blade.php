@@ -11,85 +11,64 @@
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
 
         <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Raleway', sans-serif;
-                font-weight: 100;
-                height: 100vh;
-                margin: 0;
-            }
+        <link media="all" type="text/css" rel="stylesheet" href="https://publib.qinco.net/humancss/0.14/css.min.css">
 
-            .full-height {
-                height: 100vh;
-            }
-
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
-
-            .position-ref {
-                position: relative;
-            }
-
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
-
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 12px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
     </head>
     <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-                        <a href="{{ route('register') }}">Register</a>
-                    @endauth
-                </div>
-            @endif
-
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel love Nicole
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
-                </div>
+      <div class='alert alert-thick bg-white'>
+       <div class='container  px1em  pt1em pb1em'>
+          <div class='table mb1em' id='dropZoneId{{$qfield}}'>
+            <div class='flex-left' style='min-width: 140px'>
+                <h4 id='uploadImg' class='mb0'><img src='/' width='120' height='auto'  /></h4>
             </div>
+            <div class='flex-right'>
+                <div class='box '
+                  id='upBox{{$qfield}}'
+                  data-queue-container='upQueue{{$qfield}}'
+                  data-error-container='upError{{$qfield}}'
+                  data-drop-container='dropZoneId{{$qfield}}'
+                  data-browse-btn='upBrowse{{$qfield}}'>
+                     <h5 class='lh-120 mt0'>
+                       <a href='javascript:;' id='upBrowse{{$qfield}}' class='c-dark text-underline'>上传图片</a>
+                     </h5>
+                </div>
+
+                <div class='box mt1em none' id='upError{{$qfield}}'></div>
+                <div class='box mt1em none' id="upQueue{{$qfield}}"></div>
+
+            </div>
+          </div>
         </div>
+      </div>
+
+      <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+
+      <script src="https://publib.qinco.net/plupload-2.1.8/js/plupload.full.min.js"></script>
+
+      <script src="https://publib.qinco.net/qiniu-direct-upload/dist/qiniu.min.js?v=2"></script>
+
+      <script src="https://pro.beerepublic.me/s/brpro/qiniupack.full.3.js"></script>
+
+      <script>
+
+        var uploader = new qiniuPack({
+            up_container_id: 'upBox{{$qfield}}',
+            up_saved_callback: function(res) {
+                if(typeof res === "object" )
+                    $('#uploadImg').html("<img src='"+res.up_thumbimg+"' width='120' height='auto'  />");
+            },
+            up_path_prefix: "/",
+            up_allow_multi: false,
+            up_max_size: '2mb',
+            up_file_ext: 'jpeg,jpg,png,gif',
+            up_domain: 'ovqr0c4sv.bkt.clouddn.com',
+            up_token: '{{$up_token}}',
+
+        });
+
+        uploader.start();
+
+       </script>
+
     </body>
 </html>
